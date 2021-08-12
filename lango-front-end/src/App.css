@@ -1,0 +1,22 @@
+body {
+    /* min-height: 100vh;  needed to make sure body fills up window */
+    background-color: white;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 0;
+}
+.app-container {
+    min-height: 100vh;
+
+}
+
+#root {
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-basis: 1;    
+}
