@@ -1,3 +1,4 @@
 lango-back-end/database/*
 lango-back-end/node_modules
+lango-back-end/.env
 lango-front-end/node_modules
