@@ -7,6 +7,8 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;  
 dotenv.config();
 
+const UserModel = require('./User');
+
 const app = express();
 app.listen(4000, () => {
     console.log("Server Started");
@@ -23,7 +25,7 @@ app.use(express.json());
 app.use(cors({ origin: "http://localhost:3000", credentials: true}));
 app.use(
     session({
-        secret: "swagcode",
+        secret: "reallysecretcode",
         resave: true,
         saveUninitialized: true,
     })
@@ -33,13 +35,16 @@ app.use(passport.session());
 
 passport.serializeUser((user, done) => {
     console.log("Serialize: ", user);
-    return done(null, user);
+    return done(null, user._id);
 });
 
 passport.deserializeUser((id, done) => {
-    return done(null, id)
+    UserModel.findById(id, (err, doc) => {
+        return done(null, doc)
+    });
 });
 
+//Step 2
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -49,19 +54,43 @@ passport.use(new GoogleStrategy({
   //Called on successful authentication
   //step 3
   function(accessToken, refreshToken, profile, cb) {
-    // Might insert user into database
+    //Might insert user into database
     //move on to the next stage
     //check to see if user exists w/in database
-    console.log("Succesfully Authenticated")
-    cb(null, profile)
+    UserModel.findOne({ googleId: profile.id }, async (err, doc) => {
+        if (err) {
+            console.error(err);
+            return cb(err, null)
+        }
+        if (!doc) {
+            //user doesn't exist
+            console.log("Creating a new document");
+            const document = new UserModel({
+                googleId: profile.id,
+                userName: profile.name.givenName
+            });
+
+            await document.save();
+            cb(null, document);
+        } else {
+            console.log("Existing doc", doc);
+            cb(null, doc);
+        }
+    });
   } 
 ));
 
+//Step 1
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+//Step 4
 app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
+  passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('http://localhost:3000');
 });
 app.get('/', (req, res) => {res.send("Hello World")});
+
+app.get('/get/user', (req, res) => {
+    res.send(req.user);
+});
