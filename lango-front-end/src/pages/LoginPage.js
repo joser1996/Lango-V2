@@ -2,6 +2,11 @@ import styles from "./LoginPage.module.css";
 
 const LoginPage = () => {
 
+    const googleLogin = () => {
+        console.log("Logging in")
+        window.open('http://localhost:4000/auth/google', '_self');
+    };
+
     return(
         <main id={styles.loginPage}>
             <div id={styles.leftSide}>
@@ -11,7 +16,7 @@ const LoginPage = () => {
                 </div>
             </div>
             <div id={styles.rightSide}>
-                <a href="http://172.20.113.243:3003/auth/google" className={styles.googleBtn}>
+                <div onClick={googleLogin} className={styles.googleBtn}>
                     <div className={styles.googleIconWrapper}>
                         <img className={styles.googleIcon}
                             src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
@@ -19,7 +24,7 @@ const LoginPage = () => {
                         />
                     </div>
                     <p className={styles.btnText}><b>Sign in with google</b></p>                   
-                </a>
+                </div>
             </div>
         </main>
     );
