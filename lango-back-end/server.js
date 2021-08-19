@@ -124,9 +124,10 @@ app.get('/translate/word', (req, res, next) => {
                 console.log("Got an API Error");
                 console.log(APIResBody);
             } else {
+                console.log("Body: ", APIResBody)
                 let response = {
                     "english": sourceWord,
-                    "japanese": APIResBody.translations[0].translatedText
+                    "japanese": APIResBody.data.translations[0].translatedText
                 };
                 res.json(response);
             }

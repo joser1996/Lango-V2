@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from '../pages/HomePage.module.css'
 
-export default function FirstInputCard() {
+export default function FirstInputCard(props) {
 
     const [inputText, setInputText] = useState("");
 
@@ -14,6 +14,7 @@ export default function FirstInputCard() {
             .then(data => {
                 console.log("Data: ")
                 console.log(data)
+                props.updateWordsProps(data)
             })
             .catch(err => console.error(err))
     };
