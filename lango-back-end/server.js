@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const session = require('express-session');
+const cookieSession = require('cookie-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy; 
 const APIRequest = require("request");
@@ -25,16 +26,21 @@ mongoose.connect(`${process.env.START_MONGODB}${process.env.MONGO_USER}:${proces
 
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:3000", credentials: true}));
-app.use(
-    session({
-        secret: "reallysecretcode",
-        resave: true,
-        saveUninitialized: true,
-        cookie: {
-            maxAge: 6*60*60*1000
-        }
-    })
-); 
+// app.use(
+//     session({
+//         secret: "reallysecretcode",
+//         resave: true,
+//         saveUninitialized: true,
+//         cookie: {
+//             maxAge: 6*60*60*1000
+//         }
+//     })
+// );
+app.use(cookieSession({
+    maxAge: 6*60*60*1000,
+    keys: ['hanger waldo mercy dance']
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -102,7 +108,7 @@ app.get('/get/user', (req, res) => {
 });
 
 app.get('/translate/word', (req, res, next) => {
-    console.log("Got Request")
+    //console.log("Got Request")
     let queryObj = req.query;
     let url = process.env.API_URL + process.env.API_KEY;
 
@@ -127,7 +133,7 @@ app.get('/translate/word', (req, res, next) => {
                 console.log("Got an API Error");
                 console.log(APIResBody);
             } else {
-                console.log("Body: ", APIResBody)
+                //console.log("Body: ", APIResBody)
                 let response = {
                     "english": sourceWord,
                     "japanese": APIResBody.data.translations[0].translatedText

@@ -30,6 +30,9 @@ export default function FirstInputCard(props) {
 
     const onChange = (event) => {
         setInputText(event.target.value);
+        if (event.target.value === "") {
+            props.updateWordsProps({english: "", japanese: ""})
+        }
     };
 
     return (
