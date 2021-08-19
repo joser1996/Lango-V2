@@ -21,6 +21,7 @@ export default function FirstInputCard(props) {
 
     const checkReturn = (event) => {
         if (event.charCode === 13) {
+            event.preventDefault();
             translateRequest();
         }
     };
@@ -34,8 +35,6 @@ export default function FirstInputCard(props) {
     return (
         <div id={styles.inputTextCard}>
             <textarea 
-                rows="1" 
-                cols="50" 
                 wrap="physical" 
                 id={styles.firstCardInput}
                 onChange={onChange}
