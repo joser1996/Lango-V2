@@ -4,7 +4,9 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;  
+const GoogleStrategy = require('passport-google-oauth20').Strategy; 
+const APIRequest = require("request");
+
 dotenv.config();
 
 const UserModel = require('./User');
@@ -92,5 +94,45 @@ app.get('/auth/google/callback',
 app.get('/', (req, res) => {res.send("Hello World")});
 
 app.get('/get/user', (req, res) => {
+    console.log("USER: ", req.user);
     res.send(req.user);
+});
+
+app.get('/translate/word', (req, res, next) => {
+    console.log("Got Request")
+    let queryObj = req.query;
+    let url = process.env.API_URL + process.env.API_KEY;
+
+    if (queryObj.english != undefined ) {
+        let sourceWord = queryObj.english;
+        let requestObj = {
+            "source": "en",
+            "target": "ja",
+            "q": [sourceWord] 
+        }
+
+        APIRequest({
+            url: url,
+            method: "POST",
+            headers: {"content-type": "application/json"},
+            json: requestObj
+        }, APICallback
+        );
+
+        function APICallback(err, APIResHead, APIResBody) {
+            if (err || (APIResHead.statusCode!= 200)) {
+                console.log("Got an API Error");
+                console.log(APIResBody);
+            } else {
+                let response = {
+                    "english": sourceWord,
+                    "japanese": APIResBody.translations[0].translatedText
+                };
+                res.json(response);
+            }
+        }
+    } else {
+        next();
+    }
+
 });
