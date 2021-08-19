@@ -8,7 +8,7 @@ export default function MainBody() {
     const [words, setWords] = useState({english: "", japanese: ""})
 
     const updateWords = (newWordObj) => {
-        console.log("MAIN::words: ", newWordObj);
+        //console.log("MAIN::words: ", newWordObj);
         setWords(newWordObj);
     };
 
