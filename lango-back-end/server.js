@@ -11,6 +11,8 @@ const APIRequest = require("request");
 dotenv.config();
 
 const UserModel = require('./User');
+const CardModel = require('./FlashCard');
+const FlashCard = require('./FlashCard');
 
 const app = express();
 app.listen(4000, () => {
@@ -26,16 +28,7 @@ mongoose.connect(`${process.env.START_MONGODB}${process.env.MONGO_USER}:${proces
 
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:3000", credentials: true}));
-// app.use(
-//     session({
-//         secret: "reallysecretcode",
-//         resave: true,
-//         saveUninitialized: true,
-//         cookie: {
-//             maxAge: 6*60*60*1000
-//         }
-//     })
-// );
+
 app.use(cookieSession({
     maxAge: 6*60*60*1000,
     keys: ['hanger waldo mercy dance']
@@ -65,9 +58,6 @@ passport.use(new GoogleStrategy({
   //Called on successful authentication
   //step 3
   function(accessToken, refreshToken, profile, cb) {
-    //Might insert user into database
-    //move on to the next stage
-    //check to see if user exists w/in database
     UserModel.findOne({ googleId: profile.id }, async (err, doc) => {
         if (err) {
             console.error(err);
@@ -145,4 +135,21 @@ app.get('/translate/word', (req, res, next) => {
         next();
     }
 
+});
+
+app.get('/store/words', (req, res) => {
+    let url = req.url;
+    let queryObj = req.query;
+    console.log('req id: ', req.user);
+    const document = new FlashCard({
+        user_id: req.user._id,
+        word_one: queryObj.english,
+        word_two: queryObj.japanese,
+        seen: true,
+        correct: true
+    });
+
+    resObj = {status: true};
+    document.save();
+    res.send(resObj);
 });

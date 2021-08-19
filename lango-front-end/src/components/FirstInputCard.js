@@ -3,12 +3,12 @@ import styles from '../pages/HomePage.module.css'
 
 export default function FirstInputCard(props) {
 
-    const [inputText, setInputText] = useState("");
+    const {english, japanese} = props.wordsProps;
 
     const translateRequest = () => {
         const sourceLanguage = 'english';
-        const api = `?${sourceLanguage}=${inputText}`
-        console.log("URL: ", api)
+        const api = `?${sourceLanguage}=${english}`
+        //console.log("URL: ", api)
         fetch(`http://localhost:4000/translate/word${api}`)
             .then(res => res.json())
             .then(data => {
@@ -26,12 +26,13 @@ export default function FirstInputCard(props) {
         }
     };
 
- 
 
     const onChange = (event) => {
-        setInputText(event.target.value);
         if (event.target.value === "") {
+            console.log("CLearing::")
             props.updateWordsProps({english: "", japanese: ""})
+        } else {
+            props.updateWordsProps({english: event.target.value, japanese: japanese})
         }
     };
 
@@ -42,7 +43,7 @@ export default function FirstInputCard(props) {
                 id={styles.firstCardInput}
                 onChange={onChange}
                 onKeyPress={checkReturn}
-                value={inputText}
+                value={english}
             >
             </textarea>
         </div>
