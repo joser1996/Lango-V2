@@ -30,6 +30,9 @@ app.use(
         secret: "reallysecretcode",
         resave: true,
         saveUninitialized: true,
+        cookie: {
+            maxAge: 6*60*60*1000
+        }
     })
 ); 
 app.use(passport.initialize());
@@ -94,7 +97,7 @@ app.get('/auth/google/callback',
 app.get('/', (req, res) => {res.send("Hello World")});
 
 app.get('/get/user', (req, res) => {
-    console.log("USER: ", req.user);
+    //console.log("USER: ", req.user);
     res.send(req.user);
 });
 
