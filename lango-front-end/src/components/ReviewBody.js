@@ -22,7 +22,7 @@ P
                     </textarea>
                 </div>
                 <div id={styles.nextButtonDiv}>
-                    <button id={styles.nextButton}></button>             
+                    <button id={styles.nextButton}>Next</button>             
                 </div>
             </main>
         )
