@@ -11,11 +11,14 @@ export default function Context(props) {
                 return response.json()
             })
             .then(data => {
-                //console.log("Got User: ", data);
+                console.log("Got User: ", data);
                 setUserObject(data);
             })
             .catch(err => {
                 console.log("Got error instead");
+                if (window.location.href !== 'http://localhost:3000/login'){
+                    window.location = '/login'
+                }
                 console.error(err)});
     }, []);
     return (

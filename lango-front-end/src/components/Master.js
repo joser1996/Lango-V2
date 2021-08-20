@@ -10,6 +10,7 @@ export default function Master() {
     const [reviewing, setReviewing] = useState(false);
     const [cards, setCards] = useState({});
     const [cardIndex, setCardIndex] = useState(0);
+    const [answer, setAnswer] = useState("");
 
     useEffect(() => {
         if (reviewing) {
@@ -27,6 +28,10 @@ export default function Master() {
         setReviewing(!reviewing);
     };
 
+    const updateAnswer = (ans) => {
+        setAnswer(ans);
+    };
+
     const updateIndex = () => {
         setCardIndex(prevIndex => {
             let index = prevIndex + 1;
@@ -41,7 +46,7 @@ export default function Master() {
     return (
         <div id={Styles.masterDiv}>
             <LangoHeader reviewingProps={reviewing} updateReviewingProps={updateReviewing}/>
-            {reviewing ? (<ReviewBody cardsProps={cards} cardIndex={cardIndex} updateIndex={updateIndex} currentPair={cards[cardIndex]}/>) : (<MainBody />)}
+            {reviewing ? (<ReviewBody answer={answer} updateAnswer={updateAnswer} cardsProps={cards} cardIndex={cardIndex} updateIndex={updateIndex} currentPair={cards[cardIndex]}/>) : (<MainBody />)}
             <LangoFooter />
         </div>
     )

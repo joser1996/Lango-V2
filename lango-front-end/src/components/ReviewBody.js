@@ -3,8 +3,21 @@ import styles from '../pages/HomePage.module.css';
 
 export default class ReviewBody extends Component {
 
-    checkAns = () => {
-        console.log("Checking answer");
+    checkAns = (e) => {
+        if (e.charCode === 13) {
+            e.preventDefault();
+            const wordOne = this.props.currentPair['word_one'];
+            const answer = this.props.answer;
+            if (wordOne.toLowerCase() === answer.toLowerCase()) {
+                //correct
+                console.log('Correct')
+                this.props.updateIndex();
+                this.props.updateAnswer("");
+            } else {
+                //Incorrect
+                console.log('Incorrect')
+            }
+        }       
     };
 
     nextCard = () => {
@@ -12,7 +25,9 @@ export default class ReviewBody extends Component {
         this.props.updateIndex();
     };
 
-
+    onChange = (event) => {
+        this.props.updateAnswer(event.target.value);
+    };
 
     render() {
         return (
@@ -24,8 +39,9 @@ export default class ReviewBody extends Component {
                 <div id={styles.reviewInputCard}>
                     <textarea 
                         id="reviewTextArea" 
-                        defaultValue="Hello"
-                        onKeyPress={this.checkAns}>
+                        value={this.props.answer}
+                        onKeyPress={this.checkAns}
+                        onChange={this.onChange}>
                     </textarea>
                 </div>
                 <div id={styles.nextButtonDiv}>
