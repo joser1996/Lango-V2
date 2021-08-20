@@ -153,3 +153,17 @@ app.get('/store/words', (req, res) => {
     document.save();
     res.send(resObj);
 });
+
+app.get('/get/cards', (req, res) => {
+    const userId = req.user._id
+    console.log("ID: ", userId);
+    if (userId === null) {
+        res.send({success: false})
+    } else {
+        console.log("Sending cards")
+        FlashCard.find({user_id: userId}, (err, doc) => {
+            console.log("Doc from DB: ", doc)
+            res.send(doc)
+        });
+    }
+});

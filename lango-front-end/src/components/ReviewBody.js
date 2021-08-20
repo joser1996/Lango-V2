@@ -2,16 +2,23 @@ import React, { Component } from 'react'
 import styles from '../pages/HomePage.module.css';
 
 export default class ReviewBody extends Component {
-P
+
     checkAns = () => {
         console.log("Checking answer");
     };
+
+    nextCard = () => {
+        console.log("Next card")
+        this.props.updateIndex();
+    };
+
+
 
     render() {
         return (
             <main id={styles.langoMain}>
                 <div id={styles.reviewTextCard}>
-                    <p id="pReview"></p>
+                    <p id="pReview">{this.props.currentPair? this.props.currentPair['word_two']: ""}</p>
                 </div>
 
                 <div id={styles.reviewInputCard}>
@@ -22,7 +29,7 @@ P
                     </textarea>
                 </div>
                 <div id={styles.nextButtonDiv}>
-                    <button id={styles.nextButton}>Next</button>             
+                    <button id={styles.nextButton} onClick={this.nextCard}>Next</button>             
                 </div>
             </main>
         )
