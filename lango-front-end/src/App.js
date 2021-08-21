@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage"
 import "./App.css"
-
+import { myContext } from "./components/Context";
 
 
 const App = () => {
-
+    const userObject = useContext(myContext);
     return(
         <div className="app-container"> 
             <BrowserRouter>

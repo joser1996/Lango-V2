@@ -11,11 +11,11 @@ export default function Master() {
     const [cards, setCards] = useState({});
     const [cardIndex, setCardIndex] = useState(0);
     const [answer, setAnswer] = useState("");
-
+    const host = 'https://lango-back-end.herokuapp.com'
     useEffect(() => {
         if (reviewing) {
             console.log("Getting Flash cards")
-            fetch('http://localhost:4000/get/cards', {credentials: 'include'})
+            fetch(`${host}/get/cards`, {mode: 'cors', credentials: 'include'})
                 .then(res => res.json())
                 .then(data => {
                     console.log('Recieved:', data)

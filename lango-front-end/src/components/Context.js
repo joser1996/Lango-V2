@@ -2,10 +2,10 @@ import React, { createContext, useEffect, useState } from 'react'
 export const myContext = createContext({});
 
 export default function Context(props) {
-
+    const host = 'https://lango-back-end.herokuapp.com'
     const [userObject, setUserObject] = useState();
     useEffect(()=> {
-        fetch('http://localhost:4000/get/user', { credentials: 'include' })
+        fetch(`${host}/get/user`, { credentials: 'include' })
             .then(response => {
                 //console.log("Response: ", response)
                 return response.json()
@@ -16,9 +16,9 @@ export default function Context(props) {
             })
             .catch(err => {
                 console.log("Got error instead");
-                if (window.location.href !== 'http://localhost:3000/login'){
-                    window.location = '/login'
-                }
+                // if (window.location.href !== 'http://localhost:3000/login'){
+                //     window.location = '/login'
+                // }
                 console.error(err)});
     }, []);
     return (

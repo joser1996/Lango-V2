@@ -4,12 +4,12 @@ import styles from '../pages/HomePage.module.css'
 export default function FirstInputCard(props) {
 
     const {english, japanese} = props.wordsProps;
-
+    const host = 'https://lango-back-end.herokuapp.com'
     const translateRequest = () => {
         const sourceLanguage = 'english';
         const api = `?${sourceLanguage}=${english}`
         //console.log("URL: ", api)
-        fetch(`http://localhost:4000/translate/word${api}`)
+        fetch(`${host}/translate/word${api}`, {mode: 'cors'}) 
             .then(res => res.json())
             .then(data => {
                 console.log("Data: ")
